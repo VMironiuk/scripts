@@ -1,7 +1,7 @@
 # Collection of some useful bash scripts.
 
 ### Presently the list of scripts contains:
-* script for compiling and installing fresh ffmpeg (for deb-based distributions now);
+* ffmpeg-install: script for compiling and installing fresh ffmpeg (for deb-based distributions now);
 
 ### Where to place scripts and how to set up environment?
 1. Create a folder using ```mkdir $HOME/bin```;
