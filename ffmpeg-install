@@ -139,4 +139,4 @@ hash -r
 source ~/.profile
 
 # Remove ffmpeg-sources directory:
-cd ~/ && sudo rm -r ffmpeg-sources
+cd ~/ && sudo rm -r ffmpeg_sources
