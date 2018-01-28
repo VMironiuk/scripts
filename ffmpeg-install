@@ -12,6 +12,30 @@ echo "8. Compile and install libmp3lame;"
 echo "9. Compile and install libopus;"
 echo "10. Compile and install FFmpeg;"
 
+# Get dependencies:
+sudo apt update -qq && sudo apt -y install \
+  autoconf \
+  automake \
+  build-essential \
+  cmake \
+  git \
+  libass-dev \
+  libfreetype6-dev \
+  libsdl2-dev \
+  libtheora-dev \
+  libtool \
+  libva-dev \
+  libvdpau-dev \
+  libvorbis-dev \
+  libxcb1-dev \
+  libxcb-shm0-dev \
+  libxcb-xfixes0-dev \
+  mercurial \
+  pkg-config \
+  texinfo \
+  wget \
+  zlib1g-dev
+
 # Make a new directory to put all of the source code:
 mkdir -p ~/ffmpeg_sources
 
