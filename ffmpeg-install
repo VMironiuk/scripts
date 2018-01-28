@@ -113,3 +113,6 @@ PATH="$HOME/bin:$PATH" make && \
 make install
 hash -r
 source ~/.profile
+
+# Remove ffmpeg-sources directory:
+cd ~/ && sudo rm -r ffmpeg-sources
