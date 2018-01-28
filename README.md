@@ -2,6 +2,7 @@
 
 ### Presently the list of scripts contains:
 * ffmpeg-install: script for compiling and installing fresh ffmpeg (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
+* ffmpeg-update: script for updating ffmpeg (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
 * linux-post-install: script which performs Linux post-installation steps (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
 
 ### Where to place scripts and how to set up environment?
@@ -16,4 +17,5 @@ of $PATH and execute the first match it finds.
 
 ### TODO:
 * make ffmpeg-install on rpm-based distributions;
+* make ffmpeg-update on rpm-based distributions;
 * make linux-post-install script for rpm-based distributions;
