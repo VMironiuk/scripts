@@ -3,6 +3,7 @@
 ### Presently the list of scripts contains:
 * ffmpeg-install: script for compiling and installing fresh ffmpeg (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
 * ffmpeg-update: script for updating ffmpeg (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
+* ffmpeg-revert: script for reverting changes made by ffmpef-install script;
 * linux-post-install: script which performs Linux post-installation steps (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
 
 ### Where to place scripts and how to set up environment?
