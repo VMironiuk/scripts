@@ -130,8 +130,5 @@ PATH="$HOME/bin:$PATH" make && \
 make install
 hash -r
 
-# If you want the ffmpeg command to just work from anywhere:
-source ~/.profile
-
 # Remove ffmpeg-sources directory:
 sudo rm -rf ~/ffmpeg_sources
