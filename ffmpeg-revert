@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "This script reverts changes made by ffmpef-install script"
+
+sudo rm -rf ~/ffmpeg_build ~/ffmpeg_sources ~/bin/{ffmpeg,ffprobe,ffplay,ffserver,x264,x265,nasm,vsyasm,yasm,ytasm}
+sed -i '/ffmpeg_build/d' ~/.manpath
+hash -r
