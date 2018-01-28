@@ -1,0 +1,31 @@
+#!/bin/sh
+
+echo "This script performs Linux post-installation steps and will do this by few steps."
+echo "1. Run update;"
+echo "2. Install the basic requirements for building Qt applications;"
+echo "3. Install git;"
+echo "4. Install Umbrello, UML modelling tool and code generator;"
+echo "5. Install Vim;"
+echo "6. Install CMake;"
+echo "7. Install Meld, graphical tool to diff and merge files;"
+echo "8. Install Valgrind & Valkyrie;"
+echo "9. Install Doxygen & Doxygen GUI;"
+echo "10. Install graphviz;"
+echo "11. Install QApt, tool for installing deb files;"
+echo "12. Run system upgrade;"
+echo "13. Remove obsolete packages and installation leftovers;"
+
+# Running update:
+sudo apt update
+
+sudo apt install build-essential libgl1-mesa-dev \
+  git-all umbrello vim cmake meld valgrind valkyrie \
+  doxygen doxygen-gui xdot libcdt5 libcgraph6 graphviz \
+  qapt-deb-installer
+
+# Running system upgrade:
+sudo apt dist-upgrade
+
+# Removing obsolete packages and installation leftovers:
+sudo apt-get autoremove
+sudo apt-get autoclean
