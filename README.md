@@ -1,7 +1,8 @@
 # Collection of some useful bash scripts.
 
 ### Presently the list of scripts contains:
-* ffmpeg-install: script for compiling and installing fresh ffmpeg (for deb-based distributions now);
+* ffmpeg-install: script for compiling and installing fresh ffmpeg (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
+* linux-post-install: script which performs Linux post-installation steps (for deb-based distributions now, tested on Debian 9 and Ubuntu 16.04);
 
 ### Where to place scripts and how to set up environment?
 1. Create a folder using ```mkdir $HOME/bin```;
@@ -14,4 +15,5 @@ When the system is looking for the command you typed, it will look in each direc
 of $PATH and execute the first match it finds.
 
 ### TODO:
-* make script for installing ffmpeg on rpm-based distributions;
+* make ffmpeg-install on rpm-based distributions;
+* make linux-post-install script for rpm-based distributions;
