@@ -1,2 +1,17 @@
-# scripts
-Collection of some useful bash scripts.
+# Collection of some useful bash scripts.
+
+### Presently the list of scripts contains:
+* script for compiling and installing fresh ffmpeg (for deb-based distributions now);
+
+### Where to place scripts and how to set up environment?
+1. Create a folder using ```mkdir $HOME/bin```;
+2. Put the scripts in ```$HOME/bin```;
+3. Add the following line ```$HOME/.bashrc``` by editing with your favorite editor:
+```
+export PATH="$HOME/bin:$PATH"
+```
+When the system is looking for the command you typed, it will look in each directory
+of $PATH and execute the first match it finds.
+
+### TODO:
+* make script for installing ffmpeg on rpm-based distributions;
