@@ -140,5 +140,8 @@ hash -r
 # Leaving ffmpeg/ffmpeg_sources
 cd ~/
 
+# ffmpeg command to just work from anywhere
+source ~/.profile
+
 # Remove ffmpeg-sources directory:
 sudo rm -rf ~/ffmpeg_sources
