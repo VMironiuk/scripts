@@ -1,18 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "This script will compile and install the fresh ffmpeg and will do this by few steps."
-echo "1. Get dependencies;"
-echo "2. Compile and install NASM;"
-echo "3. Compile and install Yasm;"
-echo "4. Compile and install libx264;"
-echo "5. Compile and install libx265;"
-echo "6. Compile and install libvpx;"
-echo "7. Compile and install libfdk-aac;"
-echo "8. Compile and install libmp3lame;"
-echo "9. Compile and install libopus;"
-echo "10. Compile and install FFmpeg;"
+JOBS=`getconf _NPROCESSORS_ONLN`
 
-# Get dependencies:
+function info() {
+    echo ""
+    echo "$1"
+    echo ""
+}
+
+################################################################################
+info "Get dependencies ..."
 sudo apt update -qq && sudo apt -y install \
   autoconf \
   automake \
@@ -36,80 +33,100 @@ sudo apt update -qq && sudo apt -y install \
   wget \
   zlib1g-dev
 
-# Make a new directory to put all of the source code:
-mkdir -p ~/ffmpeg_sources
 
-# An assembler used by some libraries:
+################################################################################
+info "Make a new directory to put all of the source code and binaries into ..."
+mkdir -p ~/ffmpeg_sources ~/bin
+
+
+################################################################################
+info "An assembler (NASM) used by some libraries ..."
 cd ~/ffmpeg_sources && \
 wget http://www.nasm.us/pub/nasm/releasebuilds/2.13.02/nasm-2.13.02.tar.bz2 && \
 tar xjvf nasm-2.13.02.tar.bz2 && \
 cd nasm-2.13.02 && \
 ./autogen.sh && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" && \
-make && \
+make -j$JOBS && \
 make install
 
-# An assembler used by some libraries:
+
+################################################################################
+info "An assembler (YASM) used by some libraries ..."
 cd ~/ffmpeg_sources && \
 wget -O yasm-1.3.0.tar.gz http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz && \
 tar xzvf yasm-1.3.0.tar.gz && \
 cd yasm-1.3.0 && \
 ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" && \
-make && \
+make -j$JOBS && \
 make install
 
-# H.264 video encoder. Requires ffmpeg to be configured with --enable-gpl --enable-libx264:
+
+################################################################################
+info "H.264 video encoder. Requires ffmpeg to be configured with --enable-gpl --enable-libx264 ..."
 cd ~/ffmpeg_sources && \
 git -C x264 pull 2> /dev/null || git clone --depth 1 http://git.videolan.org/git/x264 && \
 cd x264 && \
 PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --enable-static && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j$JOBS && \
 make install
 
-# H.265/HEVC video encoder:
+
+################################################################################
+info "H.265/HEVC video encoder ..."
 cd ~/ffmpeg_sources && \
 if cd x265 2> /dev/null; then hg pull && hg update; else hg clone https://bitbucket.org/multicoreware/x265; fi && \
 cd x265/build/linux && \
 PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j$JOBS && \
 make install
 
-# VP8/VP9 video encoder and decoder. Requires ffmpeg to be configured with --enable-libvpx:
+
+################################################################################
+info "VP8/VP9 video encoder and decoder. Requires ffmpeg to be configured with --enable-libvpx ..."
 cd ~/ffmpeg_sources && \
 git -C libvpx pull 2> /dev/null || git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git && \
 cd libvpx && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j$JOBS && \
 make install
 
-# AAC audio encoder. Requires ffmpeg to be configured with --enable-libfdk-aac (and --enable-nonfree if you also included --enable-gpl):
+
+################################################################################
+info "AAC audio encoder. Requires ffmpeg to be configured with --enable-libfdk-aac (and --enable-nonfree if you also included --enable-gpl) ..."
 cd ~/ffmpeg_sources && \
 git -C fdk-aac pull 2> /dev/null || git clone --depth 1 https://github.com/mstorsjo/fdk-aac && \
 cd fdk-aac && \
 autoreconf -fiv && \
 ./configure --prefix="$HOME/ffmpeg_build" --disable-shared && \
-make && \
+make -j$JOBS && \
 make install
 
-# MP3 audio encoder. Requires ffmpeg to be configured with --enable-libmp3lame:
+
+################################################################################
+info "MP3 audio encoder. Requires ffmpeg to be configured with --enable-libmp3lame ..."
 cd ~/ffmpeg_sources && \
 wget -O lame-3.100.tar.gz http://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz && \
 tar xzvf lame-3.100.tar.gz && \
 cd lame-3.100 && \
 PATH="$HOME/bin:$PATH" ./configure --prefix="$HOME/ffmpeg_build" --bindir="$HOME/bin" --disable-shared --enable-nasm && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j$JOBS && \
 make install
 
-# Opus audio decoder and encoder.Requires ffmpeg to be configured with --enable-libopus:
+
+################################################################################
+info "Opus audio decoder and encoder.Requires ffmpeg to be configured with --enable-libopus ..."
 cd ~/ffmpeg_sources && \
 git -C opus pull 2> /dev/null || git clone --depth 1 https://github.com/xiph/opus.git && \
 cd opus && \
 ./autogen.sh && \
 ./configure --prefix="$HOME/ffmpeg_build" --disable-shared && \
-make && \
+make -j$JOBS && \
 make install
 
-# FFmpeg:
+
+################################################################################
+info "FFmpeg ..."
 cd ~/ffmpeg_sources && \
 wget -O ffmpeg-snapshot.tar.bz2 http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
 tar xjvf ffmpeg-snapshot.tar.bz2 && \
@@ -133,15 +150,21 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --enable-libx264 \
   --enable-libx265 \
   --enable-nonfree && \
-PATH="$HOME/bin:$PATH" make && \
+PATH="$HOME/bin:$PATH" make -j$JOBS && \
 make install
 hash -r
 
-# Leaving ffmpeg/ffmpeg_sources
+
+################################################################################
+info "Leaving ffmpeg/ffmpeg_sources ..."
 cd ~/
 
-# ffmpeg command to just work from anywhere
+
+################################################################################
+# ffmpeg command to just work from anywhere ...
 source ~/.profile
 
-# Remove ffmpeg-sources directory:
-sudo rm -rf ~/ffmpeg_sources
+
+################################################################################
+info "Remove ffmpeg_sources directory ..."
+rm -rf ~/ffmpeg_sources
